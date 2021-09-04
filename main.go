@@ -38,20 +38,31 @@ func plus(a ...int) int {
 }
 
 func main() {
+	//x := 405949484
+	//return string format
+	//xAsBinary := fmt.Sprintf("%b\n", x)
 
-	//result, name := plus(2, 2, "stephano")
-	result := plus(2, 3, 4, 5, 6, 7, 8, 9)
-	fmt.Println(result)
+	// fmt.Printf("%o\n", x)
+	// fmt.Printf("%x\n", x)
+	// fmt.Printf("%U\n", x)
+	//fmt.Printf("\n%v,%T\n", xAsBinary, xAsBinary)
 
-	name := "Stephano ! !!!!! Is my name"
-	for _, letter := range name {
-		//print byte, should be convert formatting
-		//fmt.Println(index, letter)
+	//go에서는 array 사이즈가 고정되어있음 (fixed size). 무한 아님
+	//need slice (infinite size, = vector)
 
-		//fmt.Println("%o ",letter) //octor notation
-		//fmt.Println("%b ",letter) //binary notation
-		//fmt.Println("%x ",letter) //hex notation
-		fmt.Println(string(letter))
+	//array
+	foods := [3]string{"potato", "pizza", "pasta"}
+	// for _, value := range foods {
+	// 	fmt.Println(value)
+	// }
+	for i := 0; i < len(foods); i++ {
+		fmt.Println(foods[i])
 	}
+	//slice
+	foods_slice := []string{"potato", "pizza", "pasta"}
+	fmt.Printf("%v\n", foods_slice)
 
+	foods_slice_2 := append(foods_slice, "tomato")
+	fmt.Printf("%v\n", foods_slice_2)
+	fmt.Println(len(foods_slice_2))
 }
