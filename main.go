@@ -19,50 +19,49 @@ https://nomadcoders.co/nomadcoin/lectures/2939
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 const stephano string = "stephano"
 
-//function can return multiple value
-// func plus(a int, b int, name string) (int, string) {
-// 	return a + b, name
-// }
+type person struct {
+	name  string
+	birth int
+}
 
-func plus(a ...int) int {
-	var total int            // total :=0
-	for _, item := range a { //index, item
-		total += item
-	}
+//특정 구조체를 명시해야함, 함수를 구조체 안에다가 선언하는게 아님
 
-	return total
+//func (struct) function name (argument) return types  {}
+func (p person) sayHello() {
+	fmt.Printf("hello! my name is %s and I'm %d\n", p.name, p.myAge())
+}
+
+func (p person) myAge() int {
+
+	var age int = int(time.Now().Year()) - p.birth + 1
+	return age
 }
 
 func main() {
-	//x := 405949484
-	//return string format
-	//xAsBinary := fmt.Sprintf("%b\n", x)
+	// a := 2
+	// b := &a
+	// c := "stephano"
 
-	// fmt.Printf("%o\n", x)
-	// fmt.Printf("%x\n", x)
-	// fmt.Printf("%U\n", x)
-	//fmt.Printf("\n%v,%T\n", xAsBinary, xAsBinary)
+	// d := &c
+	// fmt.Println(*b)
+	// fmt.Println(&c, *d)
 
-	//go에서는 array 사이즈가 고정되어있음 (fixed size). 무한 아님
-	//need slice (infinite size, = vector)
+	// fmt.Println(&a, b)
+	// fmt.Println(&c, *d)
 
-	//array
-	foods := [3]string{"potato", "pizza", "pasta"}
-	// for _, value := range foods {
-	// 	fmt.Println(value)
-	// }
-	for i := 0; i < len(foods); i++ {
-		fmt.Println(foods[i])
-	}
-	//slice
-	foods_slice := []string{"potato", "pizza", "pasta"}
-	fmt.Printf("%v\n", foods_slice)
+	// c = strings.Replace(c, "s", "y", 1)
+	// fmt.Println(c)
 
-	foods_slice_2 := append(foods_slice, "tomato")
-	fmt.Printf("%v\n", foods_slice_2)
-	fmt.Println(len(foods_slice_2))
+	stephano := person{name: "stephano", birth: 1993}
+	fmt.Println(stephano)
+	//stephano := person{"stephano", 12}
+	stephano.sayHello()
+
 }
