@@ -15,6 +15,7 @@ package main
 
 import (
 	"cryptocoin/blockchain"
+	"fmt"
 )
 
 /*
@@ -45,5 +46,6 @@ can't get original value by reverse
 
 func main() {
 	chain := blockchain.GetBlockchain()
+	fmt.Println(&chain)
 
 }
