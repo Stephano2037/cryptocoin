@@ -44,8 +44,21 @@ can't get original value by reverse
 		b3hash... = (data + b2hash)
 */
 
+/*
+sync package
+
+
+*/
 func main() {
 	chain := blockchain.GetBlockchain()
-	fmt.Println(&chain)
+	chain.AddBlock("Second Block")
+	chain.AddBlock("Third Block")
+	chain.AddBlock("Forth Block")
+	for _, block := range chain.AllBlocks() {
+		//fmt.Println(block.Data)
+		fmt.Printf("Data: %s\n", block.Data)
+		fmt.Printf("Hash: %s\n", block.Hash)
+		fmt.Printf("PrevHash: %s\n", block.PrevHash)
+	}
 
 }
