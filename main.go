@@ -14,51 +14,24 @@ https://nomadcoders.co/nomadcoin/lectures/2939
 package main
 
 import (
-	"cryptocoin/blockchain"
 	"fmt"
+	"net/http"
 )
 
-/*
-block chain structure
+const port string = ":4000"
 
+//home should be store 2 arguments
+// 1. writer (Responsewriter , 유저에 보내고 싶은 데이터)
+//2. 포인터 (request는 복사 용도가 아님)
+func home(rw http.ResponseWriter, r *http.Request) {
+	//not print in console, but writer
+	fmt.Fprint(rw, "hello from home!")
+}
 
-hash -> one way function (not duplix)
-"hello" -> h_fn(x) -> "wjiofjewoijfowejof"
-"hello1" -> h_fn(x) -> "wszcvzxcvbbnnnnnn!!"
-can't get original value by reverse
-*/
-
-//block 1번의 hash 는 block 1번의 data + 이전 block의 hash 로 계산
-//block 1번이 변경되면 block 3번도 변경된다 그래야 의미있다
-//common block chain's way of hash is using [SHA256] Algorithm
-//Go language has already have this algorithm
-//hash 가 원하는 것은 불변하는 값
-/*
-	b1
-		b1hash = (data + "")
-			or
-		b1hash. = (data + "x")
-	b2
-		b2hash.. = (data + b1hash)
-	b3
-		b3hash... = (data + b2hash)
-*/
-
-/*
-sync package
-
-
-*/
 func main() {
-	chain := blockchain.GetBlockchain()
-	chain.AddBlock("Second Block")
-	chain.AddBlock("Third Block")
-	chain.AddBlock("Forth Block")
-	for _, block := range chain.AllBlocks() {
-		//fmt.Println(block.Data)
-		fmt.Printf("Data: %s\n", block.Data)
-		fmt.Printf("Hash: %s\n", block.Hash)
-		fmt.Printf("PrevHash: %s\n", block.PrevHash)
-	}
+	//1. home page 2. add page
+	http.HandleFunc("/", home)
+	fmt.Printf("Listening on http://localhost%s\n", port)
 
+	//log.Fatal(http.ListenAndServe(port, nil))
 }
