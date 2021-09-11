@@ -14,9 +14,18 @@ https://nomadcoders.co/nomadcoin/lectures/2939
 package main
 
 import (
+	"cryptocoin/blockchain"
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 )
+
+type homeData struct {
+	//lower case , is "private" , template 에도 영향을 줌 다른곳에서 사용할땐 대문자로!
+	PageTitle string
+	Blocks    []*blockchain.Block
+}
 
 const port string = ":4000"
 
@@ -25,7 +34,17 @@ const port string = ":4000"
 //2. 포인터 (request는 복사 용도가 아님)
 func home(rw http.ResponseWriter, r *http.Request) {
 	//not print in console, but writer
-	fmt.Fprint(rw, "hello from home!")
+	//templ, err := template.ParseFiles("templates/home.html")
+	/*
+		if err != nil {
+			log.Fatal(err)
+		}
+	*/
+	tmpl := template.Must(template.ParseFiles("templates/home.html"))
+
+	data := homeData{"Home", blockchain.GetBlockchain().AllBlocks()}
+	tmpl.Execute(rw, data)
+
 }
 
 func main() {
@@ -33,5 +52,5 @@ func main() {
 	http.HandleFunc("/", home)
 	fmt.Printf("Listening on http://localhost%s\n", port)
 
-	//log.Fatal(http.ListenAndServe(port, nil))
+	log.Fatal(http.ListenAndServe(port, nil))
 }
