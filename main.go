@@ -27,7 +27,12 @@ type homeData struct {
 	Blocks    []*blockchain.Block
 }
 
-const port string = ":4000"
+const (
+	port        string = ":4000"
+	templateDir string = "templates/"
+)
+
+var templates *template.Template
 
 //home should be store 2 arguments
 // 1. writer (Responsewriter , 유저에 보내고 싶은 데이터)
@@ -40,15 +45,15 @@ func home(rw http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 	*/
-	tmpl := template.Must(template.ParseFiles("templates/home.gohtml"))
-
 	data := homeData{"Home", blockchain.GetBlockchain().AllBlocks()}
-	tmpl.Execute(rw, data)
+	templates.ExecuteTemplate(rw, "home", data)
 
 }
 
 func main() {
 	//1. home page 2. add page
+	templates = template.Must(template.ParseGlob(templateDir + "pages/*.gohtml"))
+	templates = template.Must(templates.ParseGlob(templateDir + "partials/*.gohtml"))
 	http.HandleFunc("/", home)
 	fmt.Printf("Listening on http://localhost%s\n", port)
 
