@@ -50,11 +50,25 @@ func home(rw http.ResponseWriter, r *http.Request) {
 
 }
 
+func add(rw http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		templates.ExecuteTemplate(rw, "add", nil)
+	case "POST":
+		r.ParseForm()
+		data := r.Form.Get("blockData")
+		blockchain.GetBlockchain().AddBlock(data)
+		http.Redirect(rw, r, "/", http.StatusPermanentRedirect)
+	}
+	templates.ExecuteTemplate(rw, "add", nil)
+}
+
 func main() {
 	//1. home page 2. add page
 	templates = template.Must(template.ParseGlob(templateDir + "pages/*.gohtml"))
 	templates = template.Must(templates.ParseGlob(templateDir + "partials/*.gohtml"))
 	http.HandleFunc("/", home)
+	http.HandleFunc("/add", add)
 	fmt.Printf("Listening on http://localhost%s\n", port)
 
 	log.Fatal(http.ListenAndServe(port, nil))
