@@ -8,39 +8,40 @@ import (
 
 func usage() {
 	fmt.Printf("welcome to stephano coin\r\n")
-	fmt.Printf("Please use the following commands:\r\n")
-	fmt.Printf("explorer: Start the HTML Explorer\r\n")
-	fmt.Printf("rest: Start the REST API (recommended)\r\n")
+	fmt.Printf("Please use the following flags:\r\n")
+	fmt.Printf("-port=4000: Set the PORT of the server\r\n")
+	fmt.Printf("-mode=rest: Choose between 'html' and 'rest'\r\n")
 	os.Exit(1)
 }
 
 func main() {
 
-	if len(os.Args) < 2 {
+	//no command just flag
+	//default flag is in, so we don't need this exception
+	if len(os.Args) == 1 {
 		usage()
 	}
 
-	//flag 가 많다면, flagset 을 사용하는게 유용함
-	//플래그에타입을 정할 수 있음
-	rest := flag.NewFlagSet("rest", flag.ExitOnError)
+	port := flag.Int("port", 4000, "Set port of the server")
+	mode := flag.String("mode", "rest", "Choose between 'html' and 'rest' ")
 
-	portFlag := rest.Int("port", 4000, "Sets the port of the server")
+	//1번 argument 부터 쭉 확인
+	flag.Parse()
 
-	switch os.Args[1] {
-	case "explorer":
-		fmt.Printf("Start Explorer\r\n")
+	switch *mode {
 	case "rest":
-		rest.Parse(os.Args[2:])
-		//fmt.Println("Start REST API")
+		fmt.Printf("Rest\r\n")
+		//start rest api
+		//rest.Start(*port)
+	case "html":
+		fmt.Printf("html\r\n")
+		//start html explorer
+		//explorer.Start(*port)
+
 	default:
 		usage()
 	}
 
-	if rest.Parsed() {
-		fmt.Println(*portFlag)
-		fmt.Println("Start server")
-	}
-
-	fmt.Println(*portFlag)
+	fmt.Println(*port, *mode)
 
 }
