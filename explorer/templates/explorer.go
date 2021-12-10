@@ -15,7 +15,7 @@ type homeData struct {
 }
 
 const (
-	port        string = ":4000"
+	//port        string = ":4000"
 	templateDir string = "explorer/templates/"
 )
 
@@ -51,13 +51,14 @@ func add(rw http.ResponseWriter, r *http.Request) {
 var templates *template.Template
 
 //StartExplorer 라고 짓지않는 이유: main 변수에서 중복 explorer 표현이 되는것을 피하기위함
-func Start() {
+func Start(port int) {
+	handler := http.NewServeMux()
 	//1. home page 2. add page
 	templates = template.Must(template.ParseGlob(templateDir + "pages/*.gohtml"))
 	templates = template.Must(templates.ParseGlob(templateDir + "partials/*.gohtml"))
-	http.HandleFunc("/", home)
-	http.HandleFunc("/add", add)
-	fmt.Printf("Listening on http://localhost%s\n", port)
+	handler.HandleFunc("/", home)
+	handler.HandleFunc("/add", add)
+	fmt.Printf("Listening on http://localhost%d\n", port)
 
-	log.Fatal(http.ListenAndServe(port, nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), handler))
 }
